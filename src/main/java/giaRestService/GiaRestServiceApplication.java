@@ -31,13 +31,13 @@ public class GiaRestServiceApplication {
         SpringApplication.run(GiaRestServiceApplication.class, args);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public Response getGiaData(@RequestBody RequestObject requestObject) {
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_XML_VALUE})
+    public String getGiaData(@RequestBody RequestObject requestObject) {
         try {
             logger.info("Getting cert for {}:{}", requestObject.getCert_num(), requestObject.getWeight());
             String response = soapClient.getCertificateData(requestObject.getCert_num(), requestObject.getWeight());
             logger.info("Got: {}", response);
-            return Response.ok(response).build();
+            return response;
         } catch (Exception e) {
             logger.warn("Failed to get cert", e);
             throw new WebServiceException(e);
